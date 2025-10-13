@@ -12,7 +12,7 @@ export interface TransactionExplanation {
 }
 
 export interface Action {
-  type: 'transfer' | 'create' | 'mutate' | 'delete' | 'wrap' | 'unwrap' | 'publish';
+  type: 'transferred' | 'created' | 'mutated' | 'deleted' | 'wrapped' | 'published';
   description: string;
   icon: string;
 }

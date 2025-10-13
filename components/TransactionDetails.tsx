@@ -9,11 +9,11 @@ interface Props {
 export default function TransactionDetails({ transaction }: Props) {
   const getActionIcon = (type: string) => {
     switch (type) {
-      case 'transfer': return <ArrowRight className="w-5 h-5" />;
-      case 'create': return <Sparkles className="w-5 h-5" />;
-      case 'mutate': return <RotateCw className="w-5 h-5" />;
-      case 'delete': return <Trash2 className="w-5 h-5" />;
-      case 'wrap': return <Archive className="w-5 h-5" />;
+      case 'transferred': return <ArrowRight className="w-5 h-5" />;
+      case 'created': return <Sparkles className="w-5 h-5" />;
+      case 'mutated': return <RotateCw className="w-5 h-5" />;
+      case 'deleted': return <Trash2 className="w-5 h-5" />;
+      case 'wrapped': return <Archive className="w-5 h-5" />;
       default: return <Package className="w-5 h-5" />;
     }
   };

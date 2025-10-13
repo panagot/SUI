@@ -104,34 +104,28 @@ function generateActions(objectChanges: ObjectChange[], txn: any): Action[] {
 
     switch (change.type) {
       case 'transferred':
-        actionKey = 'transfer';
         icon = '➡️';
         break;
       case 'created':
-        actionKey = 'create';
         icon = '✨';
         break;
       case 'mutated':
-        actionKey = 'mutate';
         icon = '🔄';
         break;
       case 'deleted':
-        actionKey = 'delete';
         icon = '🗑️';
         break;
       case 'wrapped':
-        actionKey = 'wrap';
         icon = '📦';
         break;
       case 'published':
-        actionKey = 'publish';
         icon = '🚀';
         break;
     }
 
     if (!actionMap.has(actionKey)) {
       actionMap.set(actionKey, {
-        type: actionKey as any,
+        type: actionKey,
         description,
         icon,
       });
