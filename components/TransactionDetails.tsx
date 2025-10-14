@@ -1,12 +1,52 @@
-import { Clock, User, Package, Coins, CheckCircle, XCircle, ArrowRight, Sparkles, RotateCw, Trash2, Archive } from 'lucide-react';
+import { Clock, User, Package, Coins, CheckCircle, XCircle, ArrowRight, Sparkles, RotateCw, Trash2, Archive, Copy, Download, Share2, Moon, Sun } from 'lucide-react';
 import type { TransactionExplanation } from '@/types/transaction';
 import TransactionFlow from './TransactionFlow';
+import { useState } from 'react';
 
 interface Props {
   transaction: TransactionExplanation;
 }
 
 export default function TransactionDetails({ transaction }: Props) {
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const exportToJSON = () => {
+    const dataStr = JSON.stringify(transaction, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `transaction-${transaction.digest.slice(0, 8)}.json`;
+    link.click();
+  };
+
+  const shareTransaction = () => {
+    const url = `${window.location.origin}?tx=${transaction.digest}`;
+    if (navigator.share) {
+      navigator.share({
+        title: 'Sui Transaction',
+        text: `Check out this Sui transaction: ${transaction.digest.slice(0, 8)}...`,
+        url: url,
+      });
+    } else {
+      copyToClipboard(url, 'share');
+    }
+  };
+
+  const getTransactionType = () => {
+    if (transaction.objectChanges.some(c => c.type === 'transferred')) return 'Transfer';
+    if (transaction.objectChanges.some(c => c.type === 'created')) return 'Create';
+    if (transaction.objectChanges.some(c => c.type === 'mutated')) return 'Mutate';
+    if (transaction.moveCall) return 'Move Call';
+    return 'Transaction';
+  };
+
   const getActionIcon = (type: string) => {
     switch (type) {
       case 'transferred': return <ArrowRight className="w-5 h-5" />;
@@ -29,25 +69,69 @@ export default function TransactionDetails({ transaction }: Props) {
             <XCircle className="w-8 h-8 text-red-500 flex-shrink-0" />
           )}
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Transaction Summary
-            </h2>
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Transaction Summary
+              </h2>
+              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold">
+                {getTransactionType()}
+              </span>
+            </div>
             <p className="text-lg text-gray-600 dark:text-gray-300">
               {transaction.summary}
             </p>
           </div>
         </div>
 
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => copyToClipboard(transaction.digest, 'digest')}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition"
+          >
+            <Copy className="w-4 h-4" />
+            {copied === 'digest' ? 'Copied!' : 'Copy Digest'}
+          </button>
+          <button
+            onClick={() => copyToClipboard(transaction.sender, 'sender')}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition"
+          >
+            <Copy className="w-4 h-4" />
+            {copied === 'sender' ? 'Copied!' : 'Copy Sender'}
+          </button>
+          <button
+            onClick={exportToJSON}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg transition"
+          >
+            <Download className="w-4 h-4" />
+            Export JSON
+          </button>
+          <button
+            onClick={shareTransaction}
+            className="flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg transition"
+          >
+            <Share2 className="w-4 h-4" />
+            Share
+          </button>
+        </div>
+
         {/* Basic Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
             <User className="w-5 h-5 text-blue-500" />
-            <div>
+            <div className="flex-1">
               <p className="text-sm text-gray-500 dark:text-gray-400">Sender</p>
               <p className="font-mono text-sm text-gray-900 dark:text-white">
                 {transaction.sender.slice(0, 8)}...{transaction.sender.slice(-6)}
               </p>
             </div>
+            <button
+              onClick={() => copyToClipboard(transaction.sender, 'sender-addr')}
+              className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition"
+              title="Copy full address"
+            >
+              <Copy className="w-4 h-4 text-gray-500" />
+            </button>
           </div>
 
           {transaction.timestamp && (
@@ -191,7 +275,16 @@ export default function TransactionDetails({ transaction }: Props) {
 
       {/* Transaction Digest */}
       <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4">
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Transaction Digest</p>
+        <div className="flex items-center justify-between mb-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400">Transaction Digest</p>
+          <button
+            onClick={() => copyToClipboard(transaction.digest, 'digest-full')}
+            className="flex items-center gap-1 px-2 py-1 text-xs bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
+          >
+            <Copy className="w-3 h-3" />
+            Copy
+          </button>
+        </div>
         <p className="font-mono text-sm text-gray-900 dark:text-white break-all">
           {transaction.digest}
         </p>
