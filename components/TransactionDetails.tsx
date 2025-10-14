@@ -1,4 +1,4 @@
-import { Clock, User, Package, Coins, CheckCircle, XCircle, ArrowRight, Sparkles, RotateCw, Trash2, Archive, Copy, Download, Share2, Moon, Sun } from 'lucide-react';
+import { Clock, User, Package, Coins, CheckCircle, XCircle, ArrowRight, Sparkles, RotateCw, Trash2, Archive, Copy, Download, Share2, Moon, Sun, ExternalLink } from 'lucide-react';
 import type { TransactionExplanation } from '@/types/transaction';
 import TransactionFlow from './TransactionFlow';
 import { useState } from 'react';
@@ -45,6 +45,20 @@ export default function TransactionDetails({ transaction }: Props) {
     if (transaction.objectChanges.some(c => c.type === 'mutated')) return 'Mutate';
     if (transaction.moveCall) return 'Move Call';
     return 'Transaction';
+  };
+
+  const getGasContext = () => {
+    const total = parseFloat(transaction.gasUsed.totalCostSUI);
+    if (total < 0.001) return { label: 'Very Cheap', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-100 dark:bg-green-900/30' };
+    if (total < 0.01) return { label: 'Cheap', color: 'text-green-700 dark:text-green-300', bg: 'bg-green-50 dark:bg-green-900/20' };
+    if (total < 0.1) return { label: 'Normal', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30' };
+    if (total < 1) return { label: 'Expensive', color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-100 dark:bg-orange-900/30' };
+    return { label: 'Very Expensive', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30' };
+  };
+
+  const openInExplorer = () => {
+    const url = `https://suiscan.xyz/mainnet/tx/${transaction.digest}`;
+    window.open(url, '_blank');
   };
 
   const getActionIcon = (type: string) => {
@@ -112,6 +126,13 @@ export default function TransactionDetails({ transaction }: Props) {
           >
             <Share2 className="w-4 h-4" />
             Share
+          </button>
+          <button
+            onClick={openInExplorer}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 hover:bg-indigo-200 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-lg transition"
+          >
+            <ExternalLink className="w-4 h-4" />
+            View on Explorer
           </button>
         </div>
 
@@ -241,10 +262,15 @@ export default function TransactionDetails({ transaction }: Props) {
 
       {/* Gas Info */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <Coins className="w-6 h-6 text-yellow-500" />
-          Gas Usage
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <Coins className="w-6 h-6 text-yellow-500" />
+            Gas Usage
+          </h3>
+          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getGasContext().bg} ${getGasContext().color}`}>
+            {getGasContext().label}
+          </span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
             <p className="text-sm text-gray-600 dark:text-gray-400">Computation</p>

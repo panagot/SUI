@@ -200,7 +200,7 @@ function generateSummary(actions: Action[], objectChanges: ObjectChange[], moveC
 
 function formatObjectType(type: string): string {
   // Extract the simple name from fully qualified type
-  // e.g., "0x2::coin::Coin<0x2::sui::SUI>" -> "Coin<SUI>"
+  // e.g., "0x2::coin::Coin<0x2::sui::SUI>" -> "SUI Coin"
   
   if (type.includes('::coin::Coin')) {
     const match = type.match(/::coin::Coin<.*::(\w+)::(\w+)>/);
@@ -210,9 +210,31 @@ function formatObjectType(type: string): string {
     return 'Coin';
   }
 
+  // Handle LP tokens and complex types
+  if (type.includes('LP') || type.includes('lp')) {
+    const lpMatch = type.match(/LP[_\s]*(\w+)[_\s](\w+)/i);
+    if (lpMatch) {
+      return `LP Token (${lpMatch[1]}-${lpMatch[2]})`;
+    }
+  }
+
+  // Handle generic types like Pool<X, Y>
+  if (type.includes('<')) {
+    const genericMatch = type.match(/(\w+)<.*>/);
+    if (genericMatch) {
+      return genericMatch[1];
+    }
+  }
+
   const parts = type.split('::');
   if (parts.length >= 3) {
-    return parts[parts.length - 1].split('<')[0];
+    let name = parts[parts.length - 1].split('<')[0];
+    
+    // Clean up common patterns
+    name = name.replace(/_/g, ' ');
+    name = name.replace(/\b(\w)/g, (char) => char.toUpperCase());
+    
+    return name;
   }
 
   return type;
