@@ -36,12 +36,15 @@ export default function Home() {
 
   useEffect(() => {
     // Apply dark mode class
+    console.log('Dark mode changed to:', darkMode);
     if (darkMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('sui-dark-mode', 'true');
+      console.log('Added dark class to html element');
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('sui-dark-mode', 'false');
+      console.log('Removed dark class from html element');
     }
   }, [darkMode]);
 
@@ -82,8 +85,13 @@ export default function Home() {
     setError('');
   };
 
+  const toggleDarkMode = () => {
+    console.log('Toggling dark mode, current:', darkMode);
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-950 dark:to-gray-900 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 relative">
@@ -96,7 +104,7 @@ export default function Home() {
               <History className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleDarkMode}
               className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition"
               title="Toggle dark mode"
             >
