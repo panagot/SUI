@@ -248,7 +248,7 @@ export default function Home() {
               </div>
             ) : (
               <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-                No transactions found matching "{searchFilter}"
+                No transactions found matching &ldquo;{searchFilter}&rdquo;
               </p>
             )}
             <button
