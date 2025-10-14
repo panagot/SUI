@@ -1,6 +1,9 @@
-import { Clock, User, Package, Coins, CheckCircle, XCircle, ArrowRight, Sparkles, RotateCw, Trash2, Archive, Copy, Download, Share2, Moon, Sun, ExternalLink } from 'lucide-react';
+import { Clock, User, Package, Coins, CheckCircle, XCircle, ArrowRight, Sparkles, RotateCw, Trash2, Archive, Copy, Download, Share2, Moon, Sun, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import type { TransactionExplanation } from '@/types/transaction';
 import TransactionFlow from './TransactionFlow';
+import TransactionTimeline from './TransactionTimeline';
+import TransactionCategory from './TransactionCategory';
+import GasEstimator from './GasEstimator';
 import { useState } from 'react';
 
 interface Props {
@@ -9,6 +12,7 @@ interface Props {
 
 export default function TransactionDetails({ transaction }: Props) {
   const [copied, setCopied] = useState<string | null>(null);
+  const [expandedObjects, setExpandedObjects] = useState<Set<string>>(new Set());
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -61,6 +65,36 @@ export default function TransactionDetails({ transaction }: Props) {
     window.open(url, '_blank');
   };
 
+  const toggleObjectExpansion = (objectId: string) => {
+    const newExpanded = new Set(expandedObjects);
+    if (newExpanded.has(objectId)) {
+      newExpanded.delete(objectId);
+    } else {
+      newExpanded.add(objectId);
+    }
+    setExpandedObjects(newExpanded);
+  };
+
+  const exportToCSV = () => {
+    const headers = ['Digest', 'Sender', 'Type', 'Summary', 'Gas Cost (SUI)', 'Timestamp'];
+    const row = [
+      transaction.digest,
+      transaction.sender,
+      getTransactionType(),
+      transaction.summary,
+      transaction.gasUsed.totalCostSUI,
+      transaction.timestamp ? new Date(transaction.timestamp).toISOString() : '',
+    ];
+    
+    const csv = [headers.join(','), row.join(',')].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `transaction-${transaction.digest.slice(0, 8)}.csv`;
+    link.click();
+  };
+
   const getActionIcon = (type: string) => {
     switch (type) {
       case 'transferred': return <ArrowRight className="w-5 h-5" />;
@@ -83,13 +117,14 @@ export default function TransactionDetails({ transaction }: Props) {
             <XCircle className="w-8 h-8 text-red-500 flex-shrink-0" />
           )}
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Transaction Summary
               </h2>
               <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold">
                 {getTransactionType()}
               </span>
+              <TransactionCategory transaction={transaction} />
             </div>
             <p className="text-lg text-gray-600 dark:text-gray-300">
               {transaction.summary}
@@ -119,6 +154,13 @@ export default function TransactionDetails({ transaction }: Props) {
           >
             <Download className="w-4 h-4" />
             Export JSON
+          </button>
+          <button
+            onClick={exportToCSV}
+            className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50 text-green-700 dark:text-green-300 rounded-lg transition"
+          >
+            <Download className="w-4 h-4" />
+            Export CSV
           </button>
           <button
             onClick={shareTransaction}
@@ -169,6 +211,9 @@ export default function TransactionDetails({ transaction }: Props) {
         </div>
       </div>
 
+      {/* Transaction Timeline */}
+      <TransactionTimeline transaction={transaction} />
+
       {/* Transaction Flow Visualization */}
       <TransactionFlow transaction={transaction} />
 
@@ -202,31 +247,84 @@ export default function TransactionDetails({ transaction }: Props) {
       {transaction.objectChanges.length > 0 && (
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Object Changes
+            Object Changes ({transaction.objectChanges.length})
           </h3>
           <div className="space-y-3">
-            {transaction.objectChanges.map((change, idx) => (
-              <div key={idx} className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                  change.type === 'created' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                  change.type === 'transferred' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
-                  change.type === 'mutated' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                  'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
-                }`}>
-                  {change.type}
-                </div>
-                <div className="flex-1">
-                  <p className="text-gray-900 dark:text-white font-medium">
-                    {change.description}
-                  </p>
-                  {change.objectId && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 font-mono mt-1">
-                      {change.objectId.slice(0, 8)}...{change.objectId.slice(-6)}
-                    </p>
+            {transaction.objectChanges.map((change, idx) => {
+              const isExpanded = expandedObjects.has(change.objectId || idx.toString());
+              return (
+                <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50">
+                    <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      change.type === 'created' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                      change.type === 'transferred' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                      change.type === 'mutated' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
+                      'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
+                    }`}>
+                      {change.type}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-900 dark:text-white font-medium">
+                        {change.description}
+                      </p>
+                      {change.objectId && (
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+                            {change.objectId.slice(0, 8)}...{change.objectId.slice(-6)}
+                          </p>
+                          <button
+                            onClick={() => copyToClipboard(change.objectId!, `obj-${idx}`)}
+                            className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition"
+                            title="Copy object ID"
+                          >
+                            <Copy className="w-3 h-3 text-gray-500" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    {change.objectId && (
+                      <button
+                        onClick={() => toggleObjectExpansion(change.objectId || idx.toString())}
+                        className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition"
+                      >
+                        {isExpanded ? (
+                          <ChevronUp className="w-4 h-4 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-gray-500" />
+                        )}
+                      </button>
+                    )}
+                  </div>
+                  {isExpanded && change.objectId && (
+                    <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+                      <div className="space-y-2 text-sm">
+                        <div>
+                          <span className="text-gray-500 dark:text-gray-400">Object ID:</span>
+                          <p className="font-mono text-gray-900 dark:text-white break-all">{change.objectId}</p>
+                        </div>
+                        <div>
+                          <span className="text-gray-500 dark:text-gray-400">Type:</span>
+                          <p className="text-gray-900 dark:text-white">{change.objectType}</p>
+                        </div>
+                        {change.owner && (
+                          <div>
+                            <span className="text-gray-500 dark:text-gray-400">Owner:</span>
+                            <p className="font-mono text-gray-900 dark:text-white">{change.owner}</p>
+                          </div>
+                        )}
+                        <button
+                          onClick={() => window.open(`https://suiscan.xyz/mainnet/object/${change.objectId}`, '_blank')}
+                          className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline text-xs"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          View on Explorer
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -271,6 +369,15 @@ export default function TransactionDetails({ transaction }: Props) {
             {getGasContext().label}
           </span>
         </div>
+
+        {/* Gas Estimator */}
+        <div className="mb-6">
+          <GasEstimator 
+            cost={transaction.gasUsed.totalCostSUI} 
+            transactionType={transaction.moveCall?.function || 'default'} 
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
             <p className="text-sm text-gray-600 dark:text-gray-400">Computation</p>
