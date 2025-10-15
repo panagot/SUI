@@ -146,9 +146,12 @@ export default function Home() {
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 flex items-center justify-center">
                 <img
-                  src="https://sui.com/src/img/branding/suiLogoMark.png"
+                  src="/suilogos/Sui Symbol Ocean/Sui_Symbol_Ocean.svg"
                   alt="Sui Logo"
                   className="w-10 h-10"
+                  style={{
+                    filter: 'hue-rotate(200deg) saturate(2) brightness(0.8)'
+                  }}
                 />
               </div>
               <div>
