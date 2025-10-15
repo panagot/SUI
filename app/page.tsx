@@ -147,9 +147,13 @@ export default function Home() {
               <div className="w-14 h-14 flex items-center justify-center">
                 <div className="w-10 h-10 bg-gradient-to-br from-[#4DA2FF] to-[#011829] rounded-xl flex items-center justify-center shadow-lg">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    {/* Sui droplet-inspired design */}
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="white" opacity="0.1"/>
+                    <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" fill="white" opacity="0.2"/>
+                    <path d="M12 6C8.69 6 6 8.69 6 12s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" fill="white" opacity="0.3"/>
+                    <path d="M12 8C9.79 8 8 9.79 8 12s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" fill="white" opacity="0.4"/>
+                    <circle cx="12" cy="12" r="3" fill="white"/>
+                    <circle cx="12" cy="12" r="1.5" fill="#4DA2FF"/>
                   </svg>
                 </div>
               </div>
