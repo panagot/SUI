@@ -145,17 +145,15 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 flex items-center justify-center">
-                <div className="w-10 h-10 bg-gradient-to-br from-[#4DA2FF] to-[#011829] rounded-xl flex items-center justify-center shadow-lg">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Sui droplet-inspired design */}
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="white" opacity="0.1"/>
-                    <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" fill="white" opacity="0.2"/>
-                    <path d="M12 6C8.69 6 6 8.69 6 12s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" fill="white" opacity="0.3"/>
-                    <path d="M12 8C9.79 8 8 9.79 8 12s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" fill="white" opacity="0.4"/>
-                    <circle cx="12" cy="12" r="3" fill="white"/>
-                    <circle cx="12" cy="12" r="1.5" fill="#4DA2FF"/>
-                  </svg>
-                </div>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Sui droplet-inspired design */}
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#4DA2FF" opacity="0.1"/>
+                  <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" fill="#4DA2FF" opacity="0.2"/>
+                  <path d="M12 6C8.69 6 6 8.69 6 12s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" fill="#4DA2FF" opacity="0.3"/>
+                  <path d="M12 8C9.79 8 8 9.79 8 12s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" fill="#4DA2FF" opacity="0.4"/>
+                  <circle cx="12" cy="12" r="3" fill="#4DA2FF"/>
+                  <circle cx="12" cy="12" r="1.5" fill="white"/>
+                </svg>
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
