@@ -432,10 +432,26 @@ export default function Home() {
 
       {/* Professional Footer */}
       <footer className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50 py-6">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-slate-600 dark:text-slate-400 text-sm">
-            Made with ❤️ for the SUI community
-          </p>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex-grow"></div>
+            <p className="text-slate-600 dark:text-slate-400 text-sm">
+              Made with ❤️ for the SUI community
+            </p>
+            <div className="flex-grow flex justify-end">
+              <a 
+                href="https://twitter.com/Panagot" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-slate-600 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                title="Follow @Panagot on Twitter"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
