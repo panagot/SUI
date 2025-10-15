@@ -145,16 +145,11 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 flex items-center justify-center">
-                <div className="w-10 h-10 flex items-center justify-center">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Official Sui droplet design */}
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#4DA2FF"/>
-                    <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" fill="#4DA2FF" opacity="0.8"/>
-                    <path d="M12 6C8.69 6 6 8.69 6 12s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" fill="#4DA2FF" opacity="0.6"/>
-                    <path d="M12 8C9.79 8 8 9.79 8 12s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" fill="#4DA2FF" opacity="0.4"/>
-                    <circle cx="12" cy="12" r="2" fill="white"/>
-                  </svg>
-                </div>
+                <img
+                  src="/Sui Symbol Ocean/Sui_Symbol_Ocean.svg"
+                  alt="Sui Logo"
+                  className="w-10 h-10"
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
