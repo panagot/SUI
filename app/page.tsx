@@ -145,11 +145,13 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 flex items-center justify-center">
-                <img
-                  src="/Sui Symbol Ocean/Sui_Symbol_Ocean.png"
-                  alt="Sui Logo"
-                  className="w-10 h-10"
-                />
+                <div className="w-10 h-10 bg-gradient-to-br from-[#4DA2FF] to-[#011829] rounded-xl flex items-center justify-center shadow-lg">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
