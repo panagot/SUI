@@ -145,8 +145,12 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 flex items-center justify-center">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-700 rounded-xl flex items-center justify-center text-white font-bold text-lg">
-                  S
+                <div className="w-10 h-10 bg-gradient-to-br from-[#4DA2FF] to-[#011829] rounded-xl flex items-center justify-center shadow-lg">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="white"/>
+                    <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="#4DA2FF"/>
+                    <circle cx="12" cy="12" r="2" fill="white"/>
+                  </svg>
                 </div>
               </div>
               <div>
