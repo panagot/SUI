@@ -9,6 +9,18 @@ export interface TransactionExplanation {
   moveCall?: MoveCallInfo;
   success: boolean;
   events?: EventInfo[];
+  detailedExplanation?: string;
+  balanceChanges?: BalanceChange[];
+  educationalContent?: string[];
+}
+
+export interface BalanceChange {
+  owner?: string;
+  coinType: string;
+  amount: string;
+  amountSUI: string;
+  changeType: 'increase' | 'decrease';
+  usdValue: string;
 }
 
 export interface Action {

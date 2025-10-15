@@ -4,6 +4,8 @@ import TransactionFlow from './TransactionFlow';
 import TransactionTimeline from './TransactionTimeline';
 import TransactionCategory from './TransactionCategory';
 import GasEstimator from './GasEstimator';
+import BalanceChanges from './BalanceChanges';
+import EducationalContent from './EducationalContent';
 import { useState } from 'react';
 
 interface Props {
@@ -129,6 +131,21 @@ export default function TransactionDetails({ transaction }: Props) {
             <p className="text-lg text-gray-600 dark:text-gray-300">
               {transaction.summary}
             </p>
+            {transaction.detailedExplanation && (
+              <div className="mt-4 p-4 bg-blue-50/80 dark:bg-blue-900/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/50">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💡</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">What Happened</h4>
+                    <p className="text-blue-800 dark:text-blue-200 text-sm leading-relaxed">
+                      {transaction.detailedExplanation}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -405,6 +422,16 @@ export default function TransactionDetails({ transaction }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Balance Changes */}
+      {transaction.balanceChanges && transaction.balanceChanges.length > 0 && (
+        <BalanceChanges balanceChanges={transaction.balanceChanges} />
+      )}
+
+      {/* Educational Content */}
+      {transaction.educationalContent && transaction.educationalContent.length > 0 && (
+        <EducationalContent educationalContent={transaction.educationalContent} />
+      )}
 
       {/* Transaction Digest */}
       <div className="bg-slate-50/80 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50">
