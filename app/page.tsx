@@ -272,7 +272,7 @@ export default function Home() {
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white">The Problem</h3>
                   </div>
                   <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Current SUI explorers show raw blockchain data that's overwhelming and technical. New users struggle to understand what their transactions actually do, creating a barrier to ecosystem adoption.
+                    Current SUI explorers show raw blockchain data that&apos;s overwhelming and technical. New users struggle to understand what their transactions actually do, creating a barrier to ecosystem adoption.
                   </p>
                 </div>
                 
