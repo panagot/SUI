@@ -150,7 +150,7 @@ export default function Home() {
                   alt="Sui Logo"
                   className="w-10 h-10"
                   style={{
-                    filter: 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)'
+                    filter: 'brightness(0) saturate(100%) invert(27%) sepia(100%) saturate(2000%) hue-rotate(240deg) brightness(0.8) contrast(1.2)'
                   }}
                 />
               </div>
