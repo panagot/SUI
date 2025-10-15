@@ -146,7 +146,7 @@ export default function Home() {
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 flex items-center justify-center">
                 <img
-                  src="/Sui Symbol Ocean/Sui_Symbol_Ocean.svg"
+                  src="/sui-logo.svg"
                   alt="Sui Logo"
                   className="w-10 h-10"
                 />
