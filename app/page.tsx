@@ -431,14 +431,55 @@ export default function Home() {
       </main>
 
       {/* Professional Footer */}
-      <footer className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50 py-6">
+      <footer className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50 py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div className="flex-grow"></div>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Made with ❤️ for the SUI community
-            </p>
-            <div className="flex-grow flex justify-end">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* Features */}
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Features</h3>
+              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                <li>• Real-time transaction monitoring</li>
+                <li>• MEV detection & analysis</li>
+                <li>• Educational content & explanations</li>
+                <li>• Balance change tracking</li>
+              </ul>
+            </div>
+            
+            {/* Technology */}
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Technology</h3>
+              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                <li>• Built with Next.js & TypeScript</li>
+                <li>• SUI SDK integration</li>
+                <li>• Move language support</li>
+                <li>• Parallel execution analysis</li>
+              </ul>
+            </div>
+            
+            {/* Community */}
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Community</h3>
+              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                <li>• Open source project</li>
+                <li>• No registration required</li>
+                <li>• Professional analysis tools</li>
+                <li>• Built for SUI ecosystem</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-slate-200/50 dark:border-slate-700/50 pt-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Made with ❤️ for the SUI community
+              </p>
+              <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-500">
+                <span>© 2024 SUI Explorer</span>
+                <span>•</span>
+                <span>Grant Submission</span>
+                <span>•</span>
+                <span>Easy to Read Blockchain Explorer</span>
+              </div>
               <a 
                 href="https://twitter.com/Panagot" 
                 target="_blank" 
